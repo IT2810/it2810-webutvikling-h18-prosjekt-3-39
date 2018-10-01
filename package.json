@@ -6,7 +6,8 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "test": "jest"
   },
   "dependencies": {
     "expo": "^30.0.1",
@@ -16,5 +17,14 @@
     "react-navigation": "^2.16.0",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0"
+  },
+  "devDependencies": {
+    "babel-jest": "^23.6.0",
+    "jest": "^23.6.0",
+    "react-test-renderer": "^16.5.2"
+  },
+  "jest": {
+    "preset": "react-native"
   }
 }
+
