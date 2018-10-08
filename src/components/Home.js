@@ -1,5 +1,5 @@
-
-import React, { Component } from "react";
+import {Ionicons} from '@expo/vector-icons';
+import React, {Component} from "react";
 import {
   AppRegistry,
   StyleSheet,
@@ -10,7 +10,7 @@ import {
   Keyboard,
   Platform
 } from "react-native";
-import{
+import {
   TextInput,
   Provider as PaperProvider,
   Button
@@ -26,7 +26,7 @@ export default class TodoList extends Component {
   };
 
   changeTextHandler = text => {
-    this.setState({ text: text });
+    this.setState({text: text});
   };
 
   addTask = () => {
@@ -34,79 +34,79 @@ export default class TodoList extends Component {
 
     if (notEmpty) {
       this.setState(
-        prevState => {
-          let { tasks, text } = prevState;
-          return {
-            tasks: tasks.concat({ key: tasks.length, text: text }),
-            text: ""
-          };
-        },
-        () => Tasks.save(this.state.tasks)
+          prevState => {
+            let {tasks, text} = prevState;
+            return {
+              tasks: tasks.concat({key: tasks.length, text: text}),
+              text: ""
+            };
+          },
+          () => Tasks.save(this.state.tasks)
       );
     }
   };
 
   deleteTask = i => {
     this.setState(
-      prevState => {
-        let tasks = prevState.tasks.slice();
+        prevState => {
+          let tasks = prevState.tasks.slice();
 
-        tasks.splice(i, 1);
+          tasks.splice(i, 1);
 
-        return { tasks: tasks };
-      },
-      () => Tasks.save(this.state.tasks)
+          return {tasks: tasks};
+        },
+        () => Tasks.save(this.state.tasks)
     );
   };
 
   componentDidMount() {
     Keyboard.addListener(
-      isAndroid ? "keyboardDidShow" : "keyboardWillShow",
-      e => this.setState({ viewPadding: e.endCoordinates.height + viewPadding })
+        isAndroid ? "keyboardDidShow" : "keyboardWillShow",
+        e => this.setState({viewPadding: e.endCoordinates.height + viewPadding})
     );
 
     Keyboard.addListener(
-      isAndroid ? "keyboardDidHide" : "keyboardWillHide",
-      () => this.setState({ viewPadding: viewPadding })
+        isAndroid ? "keyboardDidHide" : "keyboardWillHide",
+        () => this.setState({viewPadding: viewPadding})
     );
 
-    Tasks.all(tasks => this.setState({ tasks: tasks || [] }));
+    Tasks.all(tasks => this.setState({tasks: tasks || []}));
   }
 
   render() {
     return (
-      <View
-        style={[styles.container, { paddingBottom: this.state.viewPadding }]}
-      >
-        <FlatList
-          style={styles.list}
-          data={this.state.tasks}
-          renderItem={({ item, index }) =>
-            <View>
-              <View style={styles.listItemCont}>
-                <Text style={styles.listItem}>
-                  {item.text}
-                </Text>
-                <Button title="X" onPress={() => this.deleteTask(index)} />
-              </View>
-              <View style={styles.hr} />
-            </View>}
-        />
-        <TextInput
-          style={styles.textInput}
-          onChangeText={this.changeTextHandler}
-          onSubmitEditing={this.addTask}
-          value={this.state.text}
-          placeholder="Add Tasks"
-          returnKeyType="done"
-          returnKeyLabel="done"
-        />
+        <View
+            style={[styles.container, {paddingBottom: this.state.viewPadding}]}
+        >
+          <FlatList
+              style={styles.list}
+              data={this.state.tasks}
+              renderItem={({item, index}) =>
+                  <View>
+                    <View style={styles.listItemCont}>
+                      <Text style={styles.listItem}>
+                        {item.text}
+                      </Text>
+                      <Button title="X" onPress={() => this.deleteTask(index)}/>
+                    </View>
+                    <View style={styles.hr}/>
+                  </View>}
+          />
+          <TextInput
+              style={styles.textInput}
+              onChangeText={this.changeTextHandler}
+              onSubmitEditing={this.addTask}
+              value={this.state.text}
+              placeholder="Add Tasks"
+              returnKeyType="done"
+              returnKeyLabel="done"
+          />
 
-        <Button mode="outlined" onPress={() => this.props.navigation.navigate("BaloonGame")}>
-          Prokrastinera
-        </Button>
-        
-      </View>
+          <Button mode="outlined" onPress={() => this.props.navigation.navigate("BaloonGame")}>
+            Prokrastinera
+          </Button>
+
+        </View>
 
     );
   }
@@ -115,7 +115,7 @@ export default class TodoList extends Component {
 let Tasks = {
   convertToArrayOfObject(tasks, callback) {
     return callback(
-      tasks ? tasks.split("||").map((task, i) => ({ key: i, text: task })) : []
+        tasks ? tasks.split("||").map((task, i) => ({key: i, text: task})) : []
     );
   },
   convertToStringWithSeparators(tasks) {
@@ -123,7 +123,7 @@ let Tasks = {
   },
   all(callback) {
     return AsyncStorage.getItem("TASKS", (err, tasks) =>
-      this.convertToArrayOfObject(tasks, callback)
+        this.convertToArrayOfObject(tasks, callback)
     );
   },
   save(tasks) {
@@ -132,7 +132,7 @@ let Tasks = {
 };
 
 const styles = StyleSheet.create({
-  
+
   button: {
     flex: 1,
     justifyContent: "center",
