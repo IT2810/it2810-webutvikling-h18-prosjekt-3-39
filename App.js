@@ -4,12 +4,12 @@ import {Provider as PaperProvider} from 'react-native-paper';
 import {createStackNavigator} from 'react-navigation';
 
 import Home from './src/components/Home';
-import Details from './src/components/Details';
+import BaloonGame from './src/components/BaloonGame';
 
 const RootStack = createStackNavigator(
     {
       Home: Home,
-      Details: Details
+      BaloonGame: BaloonGame
     },
     {
       initialRouteName: 'Home'
