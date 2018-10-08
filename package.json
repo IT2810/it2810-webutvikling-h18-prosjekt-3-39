@@ -11,8 +11,11 @@
   },
   "dependencies": {
     "expo": "^30.0.1",
+<<<<<<< HEAD
     "gcanvas.js": "0.0.8",
     "react-native-gcanvas": "0.0.7-dev",
+=======
+>>>>>>> 5c1b649dba49b3a65cc2dc4244a1839047505481
     "native-base": "^2.8.0",
     "react": "16.3.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",

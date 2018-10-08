@@ -3,22 +3,13 @@ import {createStackNavigator, createDrawerNavigator, DrawerActions} from 'react-
 import {Provider as PaperProvider} from 'react-native-paper';
 import {Ionicons} from '@expo/vector-icons';
 import {StyleSheet, View} from 'react-native';
-import DontDos from './src/components/DontDos';
-import NewDontDo from './src/components/NewDontDo';
 
 
 import Home from './src/components/Home';
 import BaloonGame from './src/components/BaloonGame';
+import DontDos from './src/components/DontDos';
+import NewDontDo from './src/components/NewDontDo';
 
-const RootStack = createStackNavigator(
-    {
-      Home: Home,
-      BaloonGame: BaloonGame
-    },
-    {
-      initialRouteName: 'Home'
-    }
-);
 
 const styles = StyleSheet.create({
   header: {
