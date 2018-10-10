@@ -25,19 +25,14 @@ export default class NewDontDo extends React.Component {
   state = {
     title: '',
     content: '',
-    last: 0
+    last: 0,
+    tasks: {}
   };
 
   async componentDidMount() {
     // Hvis det har blitt lagt til en dont do tidligere så henter vi IDen dens
     try {
-      const last = await AsyncStorage.getItem('lastDontID');
-      if (last) {
-        /*
-        * parser til Int for å slippe at 1+1 = 11
-        */
-        this.setState({last: parseInt(last)});
-      }
+      this.setState({tasks: JSON.parse(await AsyncStorage.getItem('tasks'))});
     } catch (e) {
       console.error(e);
     }
@@ -75,17 +70,18 @@ export default class NewDontDo extends React.Component {
      * Bruker AsyncStorage til å legge til en ny Dont Do
      */
     try {
-      // Utfører flere async operasjoner
-      await AsyncStorage.setItem(`dont${this.state.last + 1}`, JSON.stringify({
+      // lager en ny task state og setter state til det, og asyncstorage setitem tasks til det
+      const newTaskNumber = this.state.tasks !== null ? this.state.tasks.length : 0;
+      let newTaskState = this.state.tasks;
+      newTaskState[newTaskNumber] = {
         'title': this.state.title,
         'content': this.state.content,
         'done': false
+      };
+      this.setState({tasks: newTaskState});
+      await AsyncStorage.setItem('tasks', JSON.stringify({
+          ...newTaskState
       }));
-
-        /*
-        * Må konvertere lastDontID til string
-        */
-      await AsyncStorage.setItem('lastDontID', (this.state.last + 1).toString());
 
     } catch (e) {
       console.error(e);
