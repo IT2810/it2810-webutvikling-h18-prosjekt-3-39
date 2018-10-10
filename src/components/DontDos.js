@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, AsyncStorage} from 'react-native';
+import {Text, View, AsyncStorage, ScrollView} from 'react-native';
 import {Card, Title, Paragraph, Checkbox} from 'react-native-paper';
 
 
@@ -57,11 +57,11 @@ export default class DontDos extends React.Component {
 
   render() {
     return (
-        <View>
+        <ScrollView>
           {
             this.createToDontCards()
           }
-        </View>
+        </ScrollView>
     );
   }
 
