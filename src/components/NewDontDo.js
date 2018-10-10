@@ -32,7 +32,10 @@ export default class NewDontDo extends React.Component {
   async componentDidMount() {
     // Hvis det har blitt lagt til en dont do tidligere så henter vi IDen dens
     try {
-      this.setState({tasks: JSON.parse(await AsyncStorage.getItem('tasks'))});
+      const tasks = await AsyncStorage.getItem('tasks');
+      if (tasks) { // Sjekker om det finnes noen tasks, hvis ja så setter vi task state
+        this.setState({tasks: JSON.parse(tasks)});
+      }
     } catch (e) {
       console.error(e);
     }
@@ -71,9 +74,9 @@ export default class NewDontDo extends React.Component {
      */
     try {
       // lager en ny task state og setter state til det, og asyncstorage setitem tasks til det
-      const newTaskNumber = this.state.tasks !== null ? this.state.tasks.length : 0;
+      const newTaskNumber = Object.keys(this.state.tasks).length;
       let newTaskState = this.state.tasks;
-      newTaskState[newTaskNumber] = {
+      newTaskState[`${newTaskNumber}`] = {
         'title': this.state.title,
         'content': this.state.content,
         'done': false
