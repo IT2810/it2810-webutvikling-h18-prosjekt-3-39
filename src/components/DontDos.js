@@ -1,11 +1,22 @@
 import React from 'react';
-import {Text, View, AsyncStorage} from 'react-native';
-import {Card, Title, Paragraph, Checkbox} from 'react-native-paper';
+import {View, AsyncStorage, ScrollView} from 'react-native';
+import {Text, Card, Title, Paragraph, Checkbox, Caption, DarkTheme, DefaultTheme, Button, Divider} from 'react-native-paper';
+import Hr from 'react-native-hr-component';
 
 
 const styles = {
   card: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 10,
+    marginBottom: 10
+  },
+  caption: {
+    marginTop: 20,
+    marginBottom: 20,
+    textAlign: 'center',
+    fontSize: 20
   }
 };
 
@@ -13,7 +24,8 @@ export default class DontDos extends React.Component {
 
   state = {
     donts: [],
-    count: 0
+    count: 0,
+    tasks: {}
   };
 
   async componentDidMount() {
@@ -23,33 +35,10 @@ export default class DontDos extends React.Component {
      * Returnerer ingenting (exiter ut av funksjonen) hvis det ikke finnes noen toDonts (count < 1)
      */
     try {
-      const count = await AsyncStorage.getItem('lastDontID');
-      if (count) {
-        this.setState({count: parseInt(count)});
+      const tasks = await AsyncStorage.getItem('tasks');
+      if (tasks) { // Sjekker om det finnes noen tasks, hvis ja så setter vi task state
+        this.setState({tasks: JSON.parse(tasks)});
       }
-    } catch (e) {
-      console.error(e);
-    }
-
-    if (this.state.count < 1) return;
-
-    // Lager en liste med doDont sine keys. Den nyeste todonten kommer på toppen av listen
-    let keyList = [];
-    for (let i = this.state.count; i > 0; i--) {
-      keyList.push(`dont${i}`);
-    }
-    // Henter inn alle ToDonts ut i fra keysene i keyList
-    try {
-      // Multiget henter alle elementer i asyncstorage med en liste
-      await AsyncStorage.multiGet(keyList).then(res => {
-        let dontsAsJson = [];
-        // lager en liste med json (må parse fra string først)
-        res.forEach(e => {
-          dontsAsJson.push(JSON.parse(e[1]));
-        });
-        // Setter state
-        this.setState({donts: dontsAsJson}, () => console.log(this.state));
-      });
     } catch (e) {
       console.error(e);
     }
@@ -57,43 +46,93 @@ export default class DontDos extends React.Component {
 
   render() {
     return (
-        <View>
+        <ScrollView>
           {
             this.createToDontCards()
           }
-        </View>
+        </ScrollView>
     );
+  }
+
+  async onCheckboxPress(e) {
+    /*
+     * Lag en ny state og sett nr i (den vi sendte inn) til motsatt verdien av det den var før
+     * og så setstate med denne verdien. Dette for å oppdatere deler av state sånn at checkboxen blir checked
+     */
+    let newTaskState = this.state.tasks;
+    newTaskState[e].done = !this.state.tasks[e].done;
+    this.setState({tasks: newTaskState});
+    await AsyncStorage.setItem('tasks', JSON.stringify(newTaskState));
   }
 
   createToDontCards() {
     /*
+     * Lager en komponent med info om det er en tom liste med tasks eller ikke
+     */
+    let empty = (isDoneString, key) => {
+      return (
+          [
+            <Caption key={key} style={styles.caption}>
+              Du har ingen {isDoneString} to donts
+            </Caption>
+          ]
+      );
+    };
+    /*
      * Lager komponent av alle toDonts. Putter dette inn i render
      */
-    let cards = [];
-    this.state.donts.forEach((e, i) => {
+    let notDoneTasks = [<Hr key={'hrt'} lineColor='#000' thickness={3} fontSize={20} text='Ikke ferdig'/>];
+
+    // Horisontal linje for å separere done og not done cards
+    let doneTasks = [<Hr key={'hrb'} lineColor='#000' thickness={3} fontSize={20} text='Ferdig'/>];
+    Object.keys(this.state.tasks).reverse().forEach((e, i) => { // Itererer baklengs for å få nyeste øverst
       /*
-      * Sjekker om toDonten er null eller undefined just in case
-      * (Det var noen som ble null da jeg lagde dette fordi jeg ikke parsa state til int når man laster
-      * opp lastDontID med asyncstorage, men det er fiksa nå, så skal ikke være et problem det, men greit å ha
-      * med en sjekk uansett tenker jeg. SKader ikke iallefall.
-      */
+       * Sjekker om toDonten er null eller undefined just in case
+       * (Det var noen som ble null da jeg lagde dette fordi jeg ikke parsa state til int når man laster
+       * opp lastDontID med asyncstorage, men det er fiksa nå, så skal ikke være et problem det, men greit å ha
+       * med en sjekk uansett tenker jeg. SKader ikke iallefall.
+       */
       if (e !== null && e !== undefined) {
-        cards.push(
-            <Card key={i} style={styles.card}>
-              <Card.Content>
-                <Title>{e.title}</Title>
-                <Paragraph>{e.content}</Paragraph>
-              </Card.Content>
-              <Card.Actions>
-                <Checkbox
-                    status={e.done}
-                />
-                <Text>Ferdig</Text>
-              </Card.Actions>
-            </Card>
-        );
+        if (!this.state.tasks[e].done) {
+          notDoneTasks.push(
+              <Card key={i} style={styles.card} elevation={5} theme={DefaultTheme}>
+                <Card.Content>
+                  <Title>{this.state.tasks[e].title}</Title>
+                  <Paragraph>{this.state.tasks[e].content}</Paragraph>
+                </Card.Content>
+                <Divider/>
+                <Card.Actions>
+                  <Button
+                      mode={'text'}
+                      onPress={() => this.onCheckboxPress(e)}
+                  >
+                    Marker som ferdig
+                  </Button>
+                </Card.Actions>
+              </Card>
+          );
+        } else {
+          doneTasks.push(
+              <Card key={'notDone' + i} style={styles.card} elevation={5} theme={DarkTheme}>
+                <Card.Content>
+                  <Title>{this.state.tasks[e].title}</Title>
+                  <Paragraph>{this.state.tasks[e].content}</Paragraph>
+                </Card.Content>
+                <Divider/>
+                <Card.Actions>
+                  <Button
+                      mode={'text'}
+                      onPress={() => this.onCheckboxPress(e)}
+                  >
+                    Marker som uferdig
+                  </Button>
+                </Card.Actions>
+              </Card>
+          );
+        }
       }
     });
-    return cards;
+    return notDoneTasks.length > 1 ? notDoneTasks.concat(doneTasks.length > 1 ? doneTasks : doneTasks.concat(empty('fullførte', 'done')))
+        : notDoneTasks.concat(empty('ufullførte', 'not done')).concat(doneTasks.length > 1 ? doneTasks : doneTasks.concat(empty('fullførte', 'done')));
   }
 }

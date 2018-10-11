@@ -25,30 +25,20 @@ export default class NewDontDo extends React.Component {
   state = {
     title: '',
     content: '',
-    last: 0
+    last: 0,
+    tasks: {}
   };
 
   async componentDidMount() {
     // Hvis det har blitt lagt til en dont do tidligere så henter vi IDen dens
     try {
-      const last = await AsyncStorage.getItem('lastDontID');
-      if (last) {
-        /*
-        * parser til Int for å slippe at 1+1 = 11
-        */
-        this.setState({last: parseInt(last)});
+      const tasks = await AsyncStorage.getItem('tasks');
+      if (tasks) { // Sjekker om det finnes noen tasks, hvis ja så setter vi task state
+        this.setState({tasks: JSON.parse(tasks)});
       }
     } catch (e) {
       console.error(e);
     }
-  }
-
-  componentWillUnmount() {
-    /*
-     * Pusher DontDos for å kalle componentDidMount i DontDos
-     * Ellers oppdaterer ikke listen med to donts seg
-     */
-    this.props.navigation.push('DontDos');
   }
 
   render() {
@@ -83,18 +73,19 @@ export default class NewDontDo extends React.Component {
      * Bruker AsyncStorage til å legge til en ny Dont Do
      */
     try {
-      // Utfører flere async operasjoner
-      await Promise.all([
-        AsyncStorage.setItem(`dont${this.state.last + 1}`, JSON.stringify({
-          'title': this.state.title,
-          'content': this.state.content,
-          'done': false
-        })),
-        /*
-        * Må konvertere lastDontID til string
-        */
-        AsyncStorage.setItem('lastDontID', (this.state.last + 1).toString())
-      ]);
+      // lager en ny task state og setter state til det, og asyncstorage setitem tasks til det
+      const newTaskNumber = Object.keys(this.state.tasks).length;
+      let newTaskState = this.state.tasks;
+      newTaskState[`${newTaskNumber}`] = {
+        'title': this.state.title,
+        'content': this.state.content,
+        'done': false
+      };
+      this.setState({tasks: newTaskState});
+      await AsyncStorage.setItem('tasks', JSON.stringify({
+          ...newTaskState
+      }));
+
     } catch (e) {
       console.error(e);
     } finally {
@@ -103,7 +94,14 @@ export default class NewDontDo extends React.Component {
        * Popper denne instansen av NewDontDo for at appen ikke skal huske hva som du har skrevet her etter at det er
        * lagra (For å slippe å viske bort neste gang du skal legge til en ny to dont)
        */
-      this.props.navigation.pop();
+      this.props.navigation.dismiss();
+      this.props.navigation.popToTop();
+      this.props.navigation.push('DontDos');
+      /*
+       * Pusher DontDos for å kalle componentDidMount i DontDos
+       * Ellers oppdaterer ikke listen med to donts seg
+       */
+      // this.props.navigation.push('DontDos');
     }
   }
 }

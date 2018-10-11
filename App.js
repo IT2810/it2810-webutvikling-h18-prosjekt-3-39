@@ -1,6 +1,6 @@
 import React from 'react';
 import {createStackNavigator, createDrawerNavigator, DrawerActions} from 'react-navigation';
-import {Provider as PaperProvider} from 'react-native-paper';
+import {Provider as PaperProvider, Appbar} from 'react-native-paper';
 import {Ionicons} from '@expo/vector-icons';
 import {StyleSheet, View} from 'react-native';
 
@@ -90,7 +90,9 @@ export default class App extends React.Component {
      * Render fuction, renders App.
      * */
     return (
-        <PaperProvider style={styles.root}>
+        <PaperProvider
+            style={styles.root}
+        >
           <Root/>
         </PaperProvider>
     );
