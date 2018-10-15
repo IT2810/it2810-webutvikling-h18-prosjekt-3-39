@@ -1,9 +1,8 @@
 import React from 'react';
-import {Text, View, StyleSheet, Dimensions, Animated,TouchableOpacity,} from 'react-native';
+import {Text, View, StyleSheet, Dimensions, Animated,TouchableOpacity} from 'react-native';
 import {createStackNavigator} from 'react-navigation';
-import {Button} from "react-native-paper"
 import {black} from 'react-native-paper/src/styles/colors';
-import Canvas from "react-native-canvas"
+
 
 let styles = 
 {
@@ -43,9 +42,7 @@ class TopAnimation extends React.Component{
   }
   //this doesnt work atm
   GenerateStartPosition(){
-    let randomnum = Math.floor(Math.random()*10)
-    let screenheight = Dimensions.get("window").height
-    return randomnum + screenheight - 500
+    return Dimensions.get("window").height
   }
 
   GenerateLeft(){
@@ -68,29 +65,44 @@ class TopAnimation extends React.Component{
     this.RunAnimation()
   }
  
+  pressHandler(){
+    this.RunAnimation()
+  }
+
   RunAnimation() {
-    this.state.topAnim.setValue(this.GenerateStartPosition())
-    this.state.sleft.setValue(this.GenerateLeft())
+    let newLeft = this.GenerateLeft()
     let newColor = this.GenerateCollor()
+    this.setState({sleft: newLeft})
     this.setState({baloonColor: newColor})
+    this.state.topAnim.setValue(this.GenerateStartPosition())
     Animated.loop(
     Animated.timing(
       this.state.topAnim,
-      {toValue: -100,
+      {toValue: 0,
       duration: 10000,
     })).start()
   }
 
   render() {
     return(
-    <Animated.View style = {{ ...this.props.style, top: this.state.topAnim, left: this.state.sleft}}>
+    <Animated.View style = {{...this.props.style, top: this.state.topAnim, left: this.state.sleft}}>
       {this.props.children}
-      <Button style = {{... 
-        this.props.style,
-        backgroundColor: this.state.baloonColor, 
-        borderRadius: 50}} onPress={() => {this.RunAnimation();}} 
-        title = "Press"> .
-      </Button>
+      <TouchableOpacity
+        style = {{... 
+          this.props.style,
+        }} 
+        onPress={() => {this.pressHandler();}} 
+        > 
+        <View 
+        style = {{... 
+          this.props.style, 
+          backgroundColor: this.GenerateCollor(),
+          borderRadius: 50
+          
+        }} 
+        >
+        </View>
+      </TouchableOpacity>
      </Animated.View>
     );
 
