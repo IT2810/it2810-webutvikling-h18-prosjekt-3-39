@@ -2,7 +2,7 @@ import React from 'react';
 import {Text, View, StyleSheet, Dimensions, Animated,TouchableOpacity,} from 'react-native';
 import {createStackNavigator} from 'react-navigation';
 import {Button} from "react-native-paper"
-import { black } from 'react-native-paper/src/styles/colors';
+import {black} from 'react-native-paper/src/styles/colors';
 import Canvas from "react-native-canvas"
 
 let styles = 
@@ -11,17 +11,23 @@ let styles =
     position: "absolute",
     height: 100,
     width:100,
-    backgroundColor: "black",
-    left: 100,
   }
 };
 
 
 export default class BaloonGame extends React.Component {
-  
+
   render(){
     return(
     <View>
+      <TopAnimation style={styles.button}>
+      </TopAnimation>
+      <TopAnimation style={styles.button}>
+      </TopAnimation>
+      <TopAnimation style={styles.button}>
+      </TopAnimation>
+      <TopAnimation style={styles.button}>
+      </TopAnimation>
       <TopAnimation style={styles.button}>
       </TopAnimation>
     </View>
@@ -31,61 +37,63 @@ export default class BaloonGame extends React.Component {
 
 class TopAnimation extends React.Component{
   state = {
-    topAnim: new Animated.Value(Dimensions.get("window").height)
+    sleft: new Animated.Value(10),
+    topAnim: new Animated.Value(Dimensions.get("window").height),
+    baloonColor: "green"
+  }
+  //this doesnt work atm
+  GenerateStartPosition(){
+    let randomnum = Math.floor(Math.random()*10)
+    let screenheight = Dimensions.get("window").height
+    return randomnum + screenheight - 500
+  }
+
+  GenerateLeft(){
+   let randomnum =  Math.floor(Math.random()*Dimensions.get("window").width) -50
+   return randomnum
+  }
+
+  GenerateCollor(){
+    let randomnum = Math.floor(Math.random()*5)
+    let col = "black"
+    if (randomnum == 0){col = "red"}
+    if (randomnum == 1){col = "blue"}
+    if (randomnum == 2){col = "yellow"}
+    if (randomnum == 3){col = "orange"}
+    if (randomnum == 4){col = "green"}
+    return col
   }
 
   componentDidMount(){
-    Animated.timing(
-      this.state.topAnim,
-      {
-        toValue: 0,
-        duration: 10000,
-      }
-    ).start()
+    this.RunAnimation()
   }
  
-  handlePress() {
-    this.state.setValue({
-      topAnim: Dimensions.get("window").height
-    });
+  RunAnimation() {
+    this.state.topAnim.setValue(this.GenerateStartPosition())
+    this.state.sleft.setValue(this.GenerateLeft())
+    let newColor = this.GenerateCollor()
+    this.setState({baloonColor: newColor})
+    Animated.loop(
+    Animated.timing(
+      this.state.topAnim,
+      {toValue: -100,
+      duration: 10000,
+    })).start()
   }
 
   render() {
-    let { topAnim } = this.state;
     return(
-    <Animated.View style = {{ ...this.props.style, top: topAnim,}}>
+    <Animated.View style = {{ ...this.props.style, top: this.state.topAnim, left: this.state.sleft}}>
       {this.props.children}
+      <Button style = {{... 
+        this.props.style,
+        backgroundColor: this.state.baloonColor, 
+        borderRadius: 50}} onPress={() => {this.RunAnimation();}} 
+        title = "Press"> .
+      </Button>
      </Animated.View>
     );
 
   }
 }
 
-
-
-
-
-
-    // TODO: Får feilmeldinger med GCCAnvas
-   /*
-    return (
-      <View>
-        <Canvas ref={this.handleCanvas}/>
-      </View>
-    );
-  }
-*/
-
- /*
-  handleCanvas = (canvas) => {
-    canvas.width = Dimensions.get('window').width;
-    canvas.height = Dimensions.get('window').height;
-    ctx = canvas.getContext("2d");
-    ctx.fillStyle = "black";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-   
-  }
-   
-}
-*/
- 
