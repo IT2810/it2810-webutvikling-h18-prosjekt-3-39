@@ -16,6 +16,7 @@
     "react": "16.3.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
     "react-native-base": "^1.1.0",
+    "react-native-elements": "^0.19.1",
     "react-native-gcanvas": "0.0.7-dev",
     "react-native-hr-component": "^1.0.6",
     "react-native-paper": "^2.0.1",
@@ -29,6 +30,9 @@
     "react-test-renderer": "^16.5.2"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "moduleDirectories": [
+      "node_modules"
+    ]
   }
 }

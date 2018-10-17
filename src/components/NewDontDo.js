@@ -1,8 +1,8 @@
 import React from 'react';
 import {View, StyleSheet, TouchableWithoutFeedback, AsyncStorage} from 'react-native';
-import {createStackNavigator} from 'react-navigation';
-import {Button, TextInput} from 'react-native-paper';
-import {Ionicons} from '@expo/vector-icons';
+// import {Button, TextInput} from 'react-native-paper';
+import {Button} from 'react-native-elements';
+
 
 const styles = StyleSheet.create({
   // Styles for denne classen
@@ -25,7 +25,6 @@ export default class NewDontDo extends React.Component {
   state = {
     title: '',
     content: '',
-    last: 0,
     tasks: {}
   };
 
@@ -46,7 +45,7 @@ export default class NewDontDo extends React.Component {
         <TouchableWithoutFeedback onPress={dismissKeyboard}>
           {/* When clicking the screen (not  */}
           <View style={styles.view}>
-            <TextInput
+            {/*<TextInput
                 label='Tittel'
                 value={this.state.title}
                 onChangeText={title => this.setState({title})}
@@ -54,18 +53,29 @@ export default class NewDontDo extends React.Component {
             />
             <TextInput
                 label='Beskrivelse'
-                value={this.state.content}
+                value={this.state.content
                 onChangeText={content => this.setState({content})}
                 mode='outlined'
                 multiline
-            />
+            />*/}
             <Button disabled={!(this.state.title.length > 0 && this.state.content.length > 0)}
-                    style={styles.submitButton} icon="save" mode="contained" onPress={() => this.saveNewDontDo()}>
-              Lagre
-            </Button>
+                    style={styles.submitButton} title={'Hei'} onPress={() => this.saveNewDontDo()}/>
           </View>
         </TouchableWithoutFeedback>
     );
+  }
+
+  constructNewDontDo(prevTasks) {
+    // lager en ny task state og setter state til det, og asyncstorage setitem tasks til det
+    const newTaskNumber = Object.keys(prevTasks).length;
+    let newTaskState = this.state.tasks;
+    newTaskState[`${newTaskNumber}`] = {
+      'title': this.state.title,
+      'content': this.state.content,
+      'done': false
+    };
+    console.log(newTaskState);
+    return newTaskState;
   }
 
   async saveNewDontDo() {
@@ -73,17 +83,10 @@ export default class NewDontDo extends React.Component {
      * Bruker AsyncStorage til å legge til en ny Dont Do
      */
     try {
-      // lager en ny task state og setter state til det, og asyncstorage setitem tasks til det
-      const newTaskNumber = Object.keys(this.state.tasks).length;
-      let newTaskState = this.state.tasks;
-      newTaskState[`${newTaskNumber}`] = {
-        'title': this.state.title,
-        'content': this.state.content,
-        'done': false
-      };
-      this.setState({tasks: newTaskState});
+      const newDontDo = this.constructNewDontDo(this.state.tasks);
+      this.setState({tasks: newDontDo});
       await AsyncStorage.setItem('tasks', JSON.stringify({
-          ...newTaskState
+          ...newDontDo
       }));
 
     } catch (e) {
@@ -103,5 +106,8 @@ export default class NewDontDo extends React.Component {
        */
       // this.props.navigation.push('DontDos');
     }
+  }
+  returnsTrue() {
+    return true;
   }
 }
