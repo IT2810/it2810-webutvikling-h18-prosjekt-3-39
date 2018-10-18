@@ -16,6 +16,7 @@ let styles =
 
 export default class BaloonGame extends React.Component {
 
+  // This generates 5 baloons as defined by the styles
   render() {
     return (
         <View>
@@ -33,7 +34,7 @@ class TopAnimation extends React.Component {
   state = {
     sleft: new Animated.Value(10),
     topAnim: new Animated.Value(Dimensions.get("window").height),
-    baloonColor: "green"
+    baloonColor: ""
   };
 
   //this doesnt work atm
@@ -49,8 +50,9 @@ class TopAnimation extends React.Component {
     /*
     * Returns random color
     */
-    let randomnum = Math.floor(Math.random() * 5);
-    return ['red', 'blue', 'yellow', 'orange', 'green'][randomnum];
+    let baloonColors = ['red', 'blue', 'yellow', 'orange', 'green', "purple"]
+    let index = Math.floor(Math.random() * baloonColors.length);
+    return baloonColors[index];
   }
 
   componentDidMount() {
