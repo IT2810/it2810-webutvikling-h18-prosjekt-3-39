@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet, TouchableWithoutFeedback, AsyncStorage} from 'react-native';
 // import {Button, TextInput} from 'react-native-paper';
-import {Button} from 'react-native-elements';
+import {Button, Input} from 'react-native-elements';
 
 
 const styles = StyleSheet.create({
@@ -45,21 +45,18 @@ export default class NewDontDo extends React.Component {
         <TouchableWithoutFeedback onPress={dismissKeyboard}>
           {/* When clicking the screen (not  */}
           <View style={styles.view}>
-            {/*<TextInput
-                label='Tittel'
-                value={this.state.title}
-                onChangeText={title => this.setState({title})}
-                mode='outlined'
+            <Input
+              placeholder='Tittel'
+              label='Tittel på Dont Do'
+              value={this.state.title}
             />
-            <TextInput
-                label='Beskrivelse'
-                value={this.state.content
-                onChangeText={content => this.setState({content})}
-                mode='outlined'
-                multiline
-            />*/}
+            <Input
+                placeholder='Beskrivelse'
+                label='Beskrivelse på Dont Do'
+                value={this.state.content}
+            />
             <Button disabled={!(this.state.title.length > 0 && this.state.content.length > 0)}
-                    style={styles.submitButton} title={'Hei'} onPress={() => this.saveNewDontDo()}/>
+                    style={styles.submitButton} title={'Lagre'} onPress={() => this.saveNewDontDo()}/>
           </View>
         </TouchableWithoutFeedback>
     );
@@ -106,8 +103,5 @@ export default class NewDontDo extends React.Component {
        */
       // this.props.navigation.push('DontDos');
     }
-  }
-  returnsTrue() {
-    return true;
   }
 }
