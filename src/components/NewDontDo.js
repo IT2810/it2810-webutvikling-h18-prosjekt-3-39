@@ -73,11 +73,18 @@ export default class NewDontDo extends React.Component {
     // lager en ny task state og setter state til det, og asyncstorage setitem tasks til det
     const newTaskNumber = Object.keys(this.state.tasks).length;
     let newTaskState = this.state.tasks;
-    newTaskState[`${newTaskNumber}`] = {
-      'title': this.state.title,
-      'content': this.state.content,
-      'done': false
-    };
+    /*
+    * Sjekker om tittel og content er lengde på mer enn 0
+    * Dette trengs egentlig ikke i appen, for knappen funker ikke hvis det er sånn
+    * men pga testing blir det lettest å gjøre det på denne måten
+    */
+    if (this.state.title.length > 0 && this.state.content.length > 0) {
+      newTaskState[`${newTaskNumber}`] = {
+        'title': this.state.title,
+        'content': this.state.content,
+        'done': false
+      };
+    }
     return newTaskState;
   }
 

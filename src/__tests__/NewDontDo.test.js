@@ -1,23 +1,17 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import NewDontDo from '../components/NewDontDo';
-
-// Test bygge et snapshot uten noe data
-test('<NewDontDo /> renders correctly', () => {
-  const tree = renderer.create(<NewDontDo/>).toJSON();
-  expect(tree).toMatchSnapshot();
-});
+import MockAsyncStorage from '../mocks/MockAsyncStorage';
 
 /*
-* Test Lage et nytt dont do object når vi ikke har noen fra før
-* Setter først statene vi skal teste for. Både med ingen previous tasks og med flere previous tasks
+* Mock states vi tester med (setter state til instance med disse)
 */
 const noPreviousTasksTestState = {
   title: 'Test Title',
   content: 'Test Content',
   tasks: {}
 };
-const multiplePreviosTaskTestState = {
+const multiplePreviousTasksTestState = {
   title: 'Test Title',
   content: 'Test Content',
   tasks: {
@@ -33,15 +27,60 @@ const multiplePreviosTaskTestState = {
     }
   }
 };
+
+/*
+* Expected return for testen til saveNewDontDo
+*/
+const expectedAsyncGetTasks = {
+
+};
+
+/*
+ * Setter opp AsyncStorage Mock
+ */
+const storageCache = {};
+const AsyncStorage = new MockAsyncStorage(storageCache);
+jest.setMock('AsyncStorage', AsyncStorage);
+
+
+
 describe('<NewDontDo /> method tests', () => {
-  it('constructNewDonDo tests', () => {
-    const wrapper = renderer.create(<NewDontDo/>);
-    const instance = wrapper.getInstance();
-    // Test med ingen previous tasks
+  // Bygger NewDontDo
+  const wrapper = renderer.create(<NewDontDo/>);
+  const instance = wrapper.getInstance();
+
+  // Test bygge et snapshot uten noe data
+  test('<NewDontDo /> renders correctly', () => {
+    expect(wrapper.toJSON()).toMatchSnapshot();
+  });
+
+  /*
+   * Test Lage et nytt dont do object når vi ikke har noen fra før
+   * Setter først statene vi skal teste for. Både med ingen previous tasks og med flere previous tasks
+   */
+  // Test med ingen previous tasks
+  test('constructNewDontDo noPreviousState', () => {
     instance.state = noPreviousTasksTestState;
     expect(instance.constructNewDontDo()).toMatchSnapshot();
-    // Test med flere previous tasks
-    instance.state = multiplePreviosTaskTestState;
+  });
+  // Test med flere previous tasks
+  test('constructNewDontDo multiplePreviousState', () => {
+    instance.state = multiplePreviousTasksTestState;
     expect(instance.constructNewDontDo()).toMatchSnapshot();
+  });
+
+  /*
+   * Test saveNewDontDo with mocked AsyncStorage
+   * saveNewDontDo blir kalt med state satt i forrige test
+   * Altså med state: multiplePreviousTasksTestState
+   *
+   * Forvented return:
+   * stringified JSON av det som constructNewDontDo() spytter ut
+   * den metoden er testet i forrige test, så vi vet at den funker
+   */
+  test('saveNewDontDo tests', async () => {
+    await instance.saveNewDontDo();
+    const tasks = await AsyncStorage.getItem('tasks');
+    expect(tasks).toMatch(JSON.stringify(instance.constructNewDontDo()))
   });
 });
