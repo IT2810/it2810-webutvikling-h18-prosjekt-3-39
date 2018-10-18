@@ -1,7 +1,7 @@
 /*
  * Klasse for å mocke AsyncStorage under testing
+ * Alle funksjonene returnerer et promise sånn at vi kan teste async
  */
-
 export default class MockAsyncStorage {
   constructor(cache = {}) {
     this.storageCache = cache;
