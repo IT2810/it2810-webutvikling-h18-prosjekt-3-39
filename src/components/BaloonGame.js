@@ -45,7 +45,7 @@ class TopAnimation extends React.Component {
     return Math.floor(Math.random() * Dimensions.get("window").width) - 50;
   }
 
-  GenerateCollor() {
+  GenerateColor() {
     /*
     * Returns random color
     */
@@ -63,7 +63,7 @@ class TopAnimation extends React.Component {
 
   RunAnimation() {
     let newLeft = this.GenerateLeft();
-    let newColor = this.GenerateCollor();
+    let newColor = this.GenerateColor();
     this.setState({sleft: newLeft});
     this.setState({baloonColor: newColor});
     this.state.topAnim.setValue(this.GenerateStartPosition());
@@ -81,21 +81,18 @@ class TopAnimation extends React.Component {
         <Animated.View style={{...this.props.style, top: this.state.topAnim, left: this.state.sleft}}>
           {this.props.children}
           <TouchableOpacity
-              style={{
-                ...
-                    this.props.style
-              }}
+          style={
+            this.props.style
+          }
               onPress={() => {
                 this.pressHandler();
               }}
           >
             <View
                 style={{
-                  ...
-                      this.props.style,
-                  backgroundColor: this.GenerateCollor(),
+                  ...this.props.style,
+                  backgroundColor: this.GenerateColor(),
                   borderRadius: 50
-
                 }}
             >
             </View>
