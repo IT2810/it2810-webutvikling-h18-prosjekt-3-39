@@ -44,7 +44,7 @@ jest.setMock('AsyncStorage', AsyncStorage);
 
 
 
-describe('<NewDontDo /> method tests', () => {
+describe('<NewDontDo /> tests', () => {
   // Bygger NewDontDo
   const wrapper = renderer.create(<NewDontDo/>);
   const instance = wrapper.getInstance();
@@ -77,7 +77,12 @@ describe('<NewDontDo /> method tests', () => {
    * Forvented return:
    * stringified JSON av det som constructNewDontDo() spytter ut
    * den metoden er testet i forrige test, så vi vet at den funker
+   *
+   * Først: Test at tasks er tom
    */
+  test('AsyncStorage tasks is empty', async () => {
+    expect(await AsyncStorage.getItem('tasks')).toBe(null);
+  });
   test('saveNewDontDo tests', async () => {
     await instance.saveNewDontDo();
     const tasks = await AsyncStorage.getItem('tasks');

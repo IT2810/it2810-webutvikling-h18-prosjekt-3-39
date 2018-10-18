@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<NewDontDo /> method tests <NewDontDo /> renders correctly 1`] = `
+exports[`<NewDontDo /> tests <NewDontDo /> renders correctly 1`] = `
 <View
   accessible={true}
   onResponderGrant={[Function]}
@@ -183,7 +183,7 @@ exports[`<NewDontDo /> method tests <NewDontDo /> renders correctly 1`] = `
 </View>
 `;
 
-exports[`<NewDontDo /> method tests constructNewDontDo multiplePreviousState 1`] = `
+exports[`<NewDontDo /> tests constructNewDontDo multiplePreviousState 1`] = `
 Object {
   "0": Object {
     "content": "previous content 1",
@@ -203,7 +203,7 @@ Object {
 }
 `;
 
-exports[`<NewDontDo /> method tests constructNewDontDo noPreviousState 1`] = `
+exports[`<NewDontDo /> tests constructNewDontDo noPreviousState 1`] = `
 Object {
   "0": Object {
     "content": "Test Content",

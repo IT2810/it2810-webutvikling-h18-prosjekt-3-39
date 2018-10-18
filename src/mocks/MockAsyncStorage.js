@@ -22,20 +22,4 @@ export default class MockAsyncStorage {
           : resolve(null);
     });
   });
-
-  removeItem = jest.fn((key) => {
-    return new Promise((resolve, reject) => {
-      return this.storageCache.hasOwnProperty(key)
-          ? resolve(delete this.storageCache[key])
-          : reject('No such key!');
-    });
-  });
-
-  clear = jest.fn((key) => {
-    return new Promise((resolve, reject) => resolve(this.storageCache = {}));
-  });
-
-  getAllKeys = jest.fn((key) => {
-    return new Promise((resolve, reject) => resolve(Object.keys(this.storageCache)));
-  });
 }

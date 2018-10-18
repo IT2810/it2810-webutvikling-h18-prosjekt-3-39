@@ -1,6 +1,17 @@
 import React from 'react';
 import {View, AsyncStorage, ScrollView} from 'react-native';
-import {Text, Card, Title, Paragraph, Checkbox, Caption, DarkTheme, DefaultTheme, Button, Divider} from 'react-native-paper';
+import {
+  Text,
+  Card,
+  Title,
+  Paragraph,
+  Checkbox,
+  Caption,
+  DarkTheme,
+  DefaultTheme,
+  Button,
+  Divider
+} from 'react-native-paper';
 import Hr from 'react-native-hr-component';
 
 
@@ -23,8 +34,6 @@ const styles = {
 export default class DontDos extends React.Component {
 
   state = {
-    donts: [],
-    count: 0,
     tasks: {}
   };
 
@@ -47,9 +56,11 @@ export default class DontDos extends React.Component {
   render() {
     return (
         <ScrollView>
-          {
-            this.createToDontCards()
-          }
+          <View>
+            {
+              this.createToDontCards()
+            }
+          </View>
         </ScrollView>
     );
   }
@@ -104,7 +115,7 @@ export default class DontDos extends React.Component {
             </Button>
           </Card.Actions>
         </Card>
-    )
+    );
   }
 
   createToDontCards() {
