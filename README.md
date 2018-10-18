@@ -34,3 +34,7 @@ Redux er en state container for JavaScript apps. Det er til hjelp for å lage ap
 	* TODO: Add more about enzyme
 
 [Enzyme](https://airbnb.io/enzyme/)
+
+### Kilder:
+
+[AsyncStorage Mock](https://stackoverflow.com/questions/40952566/how-to-test-async-storage-with-jest)
