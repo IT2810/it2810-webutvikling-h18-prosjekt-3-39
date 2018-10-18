@@ -51,24 +51,7 @@ const DontDosStack = createStackNavigator({
   }
 });
 
-const HomeStack = createStackNavigator({
-  Home: {
-    screen: Home,
-    navigationOptions: ({navigation}) => ({
-      title: 'Home',  // Title to appear in status bar
-      headerLeft: <Ionicons style={styles.header} name="md-menu" size={35}
-                            onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}/>
-    })
-  }
-});
-
 const Root = createDrawerNavigator({
-  Home: {
-    screen: HomeStack,
-    navigationOptions: {
-      title: 'Home' // Text shown in left menu
-    }
-  },
   DontDos: {
     screen: DontDosStack,
     navigationOptions: {
