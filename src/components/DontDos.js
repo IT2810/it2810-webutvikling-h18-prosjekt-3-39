@@ -65,6 +65,48 @@ export default class DontDos extends React.Component {
     await AsyncStorage.setItem('tasks', JSON.stringify(newTaskState));
   }
 
+  // Hjelpemetode for å lage not completed to dont card
+  createNotCompletedToDontCard(e, i) {
+    return (
+        <Card key={i} style={styles.card} elevation={5} theme={DefaultTheme}>
+          <Card.Content>
+            <Title>{this.state.tasks[e].title}</Title>
+            <Paragraph>{this.state.tasks[e].content}</Paragraph>
+          </Card.Content>
+          <Divider/>
+          <Card.Actions>
+            <Button
+                mode={'text'}
+                onPress={() => this.onCheckboxPress(e)}
+            >
+              Marker som ferdig
+            </Button>
+          </Card.Actions>
+        </Card>
+    );
+  }
+
+  // Hjelpemetode for å lage completed toDontCard
+  createCompletedToDontCard(e, i) {
+    return (
+        <Card key={'notDone' + i} style={styles.card} elevation={5} theme={DarkTheme}>
+          <Card.Content>
+            <Title>{this.state.tasks[e].title}</Title>
+            <Paragraph>{this.state.tasks[e].content}</Paragraph>
+          </Card.Content>
+          <Divider/>
+          <Card.Actions>
+            <Button
+                mode={'text'}
+                onPress={() => this.onCheckboxPress(e)}
+            >
+              Marker som uferdig
+            </Button>
+          </Card.Actions>
+        </Card>
+    )
+  }
+
   createToDontCards() {
     /*
      * Lager en komponent med info om det er en tom liste med tasks eller ikke
@@ -94,41 +136,9 @@ export default class DontDos extends React.Component {
        */
       if (e !== null && e !== undefined) {
         if (!this.state.tasks[e].done) {
-          notDoneTasks.push(
-              <Card key={i} style={styles.card} elevation={5} theme={DefaultTheme}>
-                <Card.Content>
-                  <Title>{this.state.tasks[e].title}</Title>
-                  <Paragraph>{this.state.tasks[e].content}</Paragraph>
-                </Card.Content>
-                <Divider/>
-                <Card.Actions>
-                  <Button
-                      mode={'text'}
-                      onPress={() => this.onCheckboxPress(e)}
-                  >
-                    Marker som ferdig
-                  </Button>
-                </Card.Actions>
-              </Card>
-          );
+          notDoneTasks.push(this.createNotCompletedToDontCard(e, i));
         } else {
-          doneTasks.push(
-              <Card key={'notDone' + i} style={styles.card} elevation={5} theme={DarkTheme}>
-                <Card.Content>
-                  <Title>{this.state.tasks[e].title}</Title>
-                  <Paragraph>{this.state.tasks[e].content}</Paragraph>
-                </Card.Content>
-                <Divider/>
-                <Card.Actions>
-                  <Button
-                      mode={'text'}
-                      onPress={() => this.onCheckboxPress(e)}
-                  >
-                    Marker som uferdig
-                  </Button>
-                </Card.Actions>
-              </Card>
-          );
+          doneTasks.push(this.createCompletedToDontCard(e, i));
         }
       }
     });

@@ -46,17 +46,24 @@ export default class NewDontDo extends React.Component {
           {/* When clicking the screen (not  */}
           <View style={styles.view}>
             <Input
-              placeholder='Tittel'
-              label='Tittel på Dont Do'
-              value={this.state.title}
+                placeholder='Tittel'
+                label='Tittel på Dont Do'
+                value={this.state.title}
             />
             <Input
                 placeholder='Beskrivelse'
                 label='Beskrivelse på Dont Do'
                 value={this.state.content}
             />
-            <Button disabled={!(this.state.title.length > 0 && this.state.content.length > 0)}
-                    style={styles.submitButton} title={'Lagre'} onPress={() => this.saveNewDontDo()}/>
+            <Button
+                disabled={!(this.state.title.length > 0 && this.state.content.length > 0)}
+                style={styles.submitButton}
+                title={'Lagre'}
+                onPress={async () => {
+                  await this.saveNewDontDo().then(() => {
+                    this.navigateToDontDosAndUpdate();
+                  });
+                }}/>
           </View>
         </TouchableWithoutFeedback>
     );
@@ -71,7 +78,6 @@ export default class NewDontDo extends React.Component {
       'content': this.state.content,
       'done': false
     };
-    console.log(newTaskState);
     return newTaskState;
   }
 
@@ -83,25 +89,25 @@ export default class NewDontDo extends React.Component {
       const newDontDo = this.constructNewDontDo();
       this.setState({tasks: newDontDo});
       await AsyncStorage.setItem('tasks', JSON.stringify({
-          ...newDontDo
+        ...newDontDo
       }));
 
     } catch (e) {
       console.error(e);
-    } finally {
-      // navigerer tilbake til Dont Dos
-      /*
-       * Popper denne instansen av NewDontDo for at appen ikke skal huske hva som du har skrevet her etter at det er
-       * lagra (For å slippe å viske bort neste gang du skal legge til en ny to dont)
-       */
-      this.props.navigation.dismiss();
-      this.props.navigation.popToTop();
-      this.props.navigation.push('DontDos');
-      /*
-       * Pusher DontDos for å kalle componentDidMount i DontDos
-       * Ellers oppdaterer ikke listen med to donts seg
-       */
-      // this.props.navigation.push('DontDos');
     }
+  }
+
+  navigateToDontDosAndUpdate() {
+    /*
+     * Navigerer tilbake til Dont Dos
+     * Popper denne instansen av NewDontDo for at appen ikke skal huske hva som du har skrevet her etter at det er
+     * lagra (For å slippe å viske bort neste gang du skal legge til en ny to dont)
+     * Må ha alt dette for å fjerne alt fra navigation stacken og pushe på en ny DontDos for at
+     * vi ikke skal få flere DontDos som legger seg "oppå" hverandre, samtidig som vi vil at
+     * DontDos sin componentDidMount metode skal kalles
+     */
+    this.props.navigation.dismiss();
+    this.props.navigation.popToTop();
+    this.props.navigation.push('DontDos');
   }
 }
