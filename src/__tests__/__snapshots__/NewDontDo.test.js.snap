@@ -1,6 +1,36 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders correctly 1`] = `
+exports[`<NewDontDo /> method tests constructNewDonDo tests 1`] = `
+Object {
+  "0": Object {
+    "content": "Test Content",
+    "done": false,
+    "title": "Test Title",
+  },
+}
+`;
+
+exports[`<NewDontDo /> method tests constructNewDonDo tests 2`] = `
+Object {
+  "0": Object {
+    "content": "previous content 1",
+    "done": false,
+    "title": "previous title 1",
+  },
+  "1": Object {
+    "content": "previous content 1",
+    "done": false,
+    "title": "previous title 1",
+  },
+  "2": Object {
+    "content": "Test Content",
+    "done": false,
+    "title": "Test Title",
+  },
+}
+`;
+
+exports[`<NewDontDo /> renders correctly 1`] = `
 <View
   accessible={true}
   onResponderGrant={[Function]}

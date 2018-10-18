@@ -62,9 +62,9 @@ export default class NewDontDo extends React.Component {
     );
   }
 
-  constructNewDontDo(prevTasks) {
+  constructNewDontDo() {
     // lager en ny task state og setter state til det, og asyncstorage setitem tasks til det
-    const newTaskNumber = Object.keys(prevTasks).length;
+    const newTaskNumber = Object.keys(this.state.tasks).length;
     let newTaskState = this.state.tasks;
     newTaskState[`${newTaskNumber}`] = {
       'title': this.state.title,
@@ -80,7 +80,7 @@ export default class NewDontDo extends React.Component {
      * Bruker AsyncStorage til å legge til en ny Dont Do
      */
     try {
-      const newDontDo = this.constructNewDontDo(this.state.tasks);
+      const newDontDo = this.constructNewDontDo();
       this.setState({tasks: newDontDo});
       await AsyncStorage.setItem('tasks', JSON.stringify({
           ...newDontDo
