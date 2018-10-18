@@ -51,7 +51,6 @@ class TopAnimation extends React.Component {
     */
     let randomnum = Math.floor(Math.random() * 5);
     return ['red', 'blue', 'yellow', 'orange', 'green'][randomnum];
-
   }
 
   componentDidMount() {
