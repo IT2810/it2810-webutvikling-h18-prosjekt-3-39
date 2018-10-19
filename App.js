@@ -25,11 +25,11 @@ const styles = StyleSheet.create({
 const BaloonGameStack = createStackNavigator({
   Baloon: {
     screen: BaloonGame,
-    navigationOptions: {
+    navigationOptions: ({navigation}) => ({
       title: 'Baloon Game',
       headerLeft: <Ionicons style={styles.header} name="md-menu" size={35}
                             onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}/>
-    }
+    })
   }
 });
 
