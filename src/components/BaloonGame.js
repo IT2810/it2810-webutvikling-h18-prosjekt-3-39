@@ -2,6 +2,7 @@ import React from 'react';
 import {Text, View, StyleSheet, Dimensions, Animated, TouchableOpacity} from 'react-native';
 import {createStackNavigator} from 'react-navigation';
 import {black} from 'react-native-paper/src/styles/colors';
+import {Audio} from "expo"
 
 
 let styles =
@@ -46,21 +47,38 @@ class TopAnimation extends React.Component {
     return Math.floor(Math.random() * Dimensions.get("window").width) - 50;
   }
 
+  ChooseRandom(array){
+    return array[Math.floor(Math.random() * array.length)];
+  }
   GenerateColor() {
-    /*
-    * Returns random color
-    */
-    let baloonColors = ['red', 'blue', 'yellow', 'orange', 'green', "purple"]
-    let index = Math.floor(Math.random() * baloonColors.length);
-    return baloonColors[index];
+    let baloonColors = ['red', 'blue', 'yellow', 'orange', 'green', "purple"] 
+    return this.ChooseRandom(baloonColors);}
+
+  GenerateSound(){
+    let soundOption = [
+      require("../sound/pop1.mp3"),
+      require("../sound/pop2.mp3"),
+      require("../sound/pop3.mp3")
+    ]
+    return this.ChooseRandom(soundOption);
   }
 
   componentDidMount() {
     this.RunAnimation();
   }
 
-  pressHandler() {
+  async pressHandler() {
     this.RunAnimation();
+    pop = new Audio.Sound()
+    let soundloc = this.GenerateSound();
+    try {
+      await pop.loadAsync(this.GenerateSound());
+      await pop.playAsync();
+      await pop.setPositionAsync(0);
+      // Your sound is playing!
+    } catch (error) {
+      // An error occurred!
+    }
   }
 
   RunAnimation() {
