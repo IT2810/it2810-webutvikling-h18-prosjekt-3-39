@@ -1,10 +1,12 @@
 import React from 'react';
 import Expo, {Pedometer} from 'expo';
-import {Text, View, StyleSheet} from 'react-native';
+import {View, StyleSheet} from 'react-native';
+import { Text} from 'react-native-elements';
 
 
 export default class PedometerSensor extends React.Component {
 
+  // Kode tatt fra https://docs.expo.io/versions/latest/sdk/pedometer START
   state = {
     isPedometerAvailable: "checking",
     pastStepCount: 0,
@@ -20,12 +22,17 @@ export default class PedometerSensor extends React.Component {
   }
 
   _subscribe = () => {
+    /*
+    * Teller hvor mange skritt du har gått mens PedomeyerSensor er mounted
+    * Med på å hjelpe til å oppdatere antall skritt i dag dynamisk
+    */
     this._subscription = Pedometer.watchStepCount(result => {
       this.setState({
         currentStepCount: result.steps
       });
     });
 
+    // Sjekker om skritteller er tilgjengelig på tlf
     Pedometer.isAvailableAsync().then(
         result => {
           this.setState({
@@ -39,6 +46,7 @@ export default class PedometerSensor extends React.Component {
         }
     );
 
+    // Henter skritt du har gått idag fra tlf
     const end = new Date();
     const start = new Date();
     start.setDate(end.getDate() - 1);
@@ -54,21 +62,35 @@ export default class PedometerSensor extends React.Component {
     );
   };
 
+  // Unsubscriber på skritt denne session
   _unsubscribe = () => {
     this._subscription && this._subscription.remove();
     this._subscription = null;
   };
 
+  // Kode tatt fra https://docs.expo.io/versions/latest/sdk/pedometer SLUTT
+
+  /*
+   * Sjekker om du har gått for langt idag for å minne deg på at
+   * du må prokrastinere litt mer
+   */
+
+
   render() {
     return (
         <View style={styles.container}>
-          <Text>
-            Pedometer.isAvailableAsync(): {this.state.isPedometerAvailable}
+          <Text style={styles.mediumText}>
+            Skritt i dag:
           </Text>
-          <Text>
-            Steps taken in the last 24 hours: {this.state.pastStepCount}
+          <Text style={styles.bigText}>
+            {/*
+             Plusser sammen pastStepCount (Alle steps så langt idag)
+             og currenStepCount (Alle steps du har tatt mens du er inne i skritteller appen
+             Dette fordi pasStepCount ikke teller hele tiden, men henter fra google fit/core motion når du
+             åpner siden "Pedometer"
+             */}
+            {this.state.pastStepCount + this.state.currentStepCount}
           </Text>
-          <Text>Walk! And watch this go up: {this.state.currentStepCount}</Text>
         </View>
     );
   }
@@ -79,5 +101,11 @@ const styles = StyleSheet.create({
     marginTop: 15,
     alignItems: "center",
     justifyContent: "center"
+  },
+  bigText: {
+    fontSize: 72
+  },
+  mediumText: {
+    fontSize: 32
   }
 });
