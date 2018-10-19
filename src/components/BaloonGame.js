@@ -4,7 +4,7 @@ import {createStackNavigator} from 'react-navigation';
 import {black} from 'react-native-paper/src/styles/colors';
 import {Audio} from "expo"
 
-
+//brukt for å style objektene som beveger seg i spillet
 let styles =
     {
       button: {
@@ -14,46 +14,45 @@ let styles =
       }
     };
 
-
 export default class BaloonGame extends React.Component {
-
-  // This generates 5 baloons as defined by the styles
+  // This generates 5 baloons, and sets the background collor of the whole screen to black
   render() {
     return (
         <View style = {{backgroundColor:"black", height: Dimensions.get("window").height}}>
-          <TopAnimation style={styles.button}/>
-          <TopAnimation style={styles.button}/>
-          <TopAnimation style={styles.button}/>
-          <TopAnimation style={styles.button}/>
-          <TopAnimation style={styles.button}/>
+          <Baloon style={styles.button}/>
+          <Baloon style={styles.button}/>
+          <Baloon style={styles.button}/>
+          <Baloon style={styles.button}/>
+          <Baloon style={styles.button}/>
         </View>
     );
   }
 }
 
-class TopAnimation extends React.Component {
+class Baloon extends React.Component {
   state = {
-    sleft: new Animated.Value(10),
-    topAnim: new Animated.Value(Dimensions.get("window").height),
+    sleft: 0,
+    topAnim: new Animated.Value(this.GenerateStartPosition()),
     baloonColor: ""
   };
-
-  //this doesnt work atm
+  // return the hegiht of the screen.
   GenerateStartPosition() {
     return Dimensions.get("window").height;
   }
-
+  // Generates a random value based on the screen widht
   GenerateLeft() {
     return Math.floor(Math.random() * Dimensions.get("window").width) - 50;
   }
-
+  // chooses a random element form the array passed into it.
   ChooseRandom(array){
     return array[Math.floor(Math.random() * array.length)];
   }
+  // returns a collor srting for styling baloons
   GenerateColor() {
     let baloonColors = ['red', 'blue', 'yellow', 'orange', 'green', "purple"] 
     return this.ChooseRandom(baloonColors);}
-
+  
+  // returns a string corresponding to a soundfile in src folder.
   GenerateSound(){
     let soundOption = [
       require("../sound/pop1.mp3"),
@@ -62,11 +61,11 @@ class TopAnimation extends React.Component {
     ]
     return this.ChooseRandom(soundOption);
   }
-
+  // triggers when the baloon mounts. 
   componentDidMount() {
     this.RunAnimation();
   }
-
+  // when a baloon i spressed this function i called
   async pressHandler() {
     this.RunAnimation();
     pop = new Audio.Sound()
@@ -80,7 +79,7 @@ class TopAnimation extends React.Component {
       // An error occurred!
     }
   }
-
+  //Resets and runs the animation. 
   RunAnimation() {
     let newLeft = this.GenerateLeft();
     let newColor = this.GenerateColor();
@@ -98,6 +97,8 @@ class TopAnimation extends React.Component {
 
   render() {
     return (
+        //Animated.View er et view hvor du kan endre props over tid.
+        //tochable opacities brukes for å lage en balongformet (rund) knapp.
         <Animated.View style={{...this.props.style, top: this.state.topAnim, left: this.state.sleft}}>
           {this.props.children}
           <TouchableOpacity
