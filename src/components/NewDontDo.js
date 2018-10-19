@@ -49,11 +49,13 @@ export default class NewDontDo extends React.Component {
                 placeholder='Tittel'
                 label='Tittel på Dont Do'
                 value={this.state.title}
+                onChangeText={title => this.setState({title: title})}
             />
             <Input
                 placeholder='Beskrivelse'
                 label='Beskrivelse på Dont Do'
                 value={this.state.content}
+                onChangeText={content => this.setState({content: content})}
             />
             <Button
                 disabled={!(this.state.title.length > 0 && this.state.content.length > 0)}

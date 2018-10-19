@@ -5,7 +5,6 @@ import {Ionicons} from '@expo/vector-icons';
 import {StyleSheet, View} from 'react-native';
 
 
-import Home from './src/components/Home';
 import BaloonGame from './src/components/BaloonGame';
 import DontDos from './src/components/DontDos';
 import NewDontDo from './src/components/NewDontDo';
