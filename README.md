@@ -1,8 +1,23 @@
 # it2810-webutvikling-h18-prosjekt-3-39
 
-# Hvordan bruke git/github issues med commits
+# Introduksjon - Todont Appen
 
-I denne oppgaven må vi passe ekstra godt på å bruke git på en god måte. Derfor vør vi knytte alle commits opp til issues. Dette gjøres ved å skrive f.eks. `git commit -m "En beskrivende melding av hva som blir committed #1` for å knytte committen til issue 1. For å lukke issue 1 skriver du `git commit -m "En beskrivende melding av hva som blir committed closes #1`
+I en verden hvor generasjon prestasjon har tatt over har vi satt oss som mål å
+være en motpol nettopp dette. Vår app tråkker hardt på gasspedalen og skal få
+brukeren til å roe ned og bevege seg mindre. For å gjøre dette kan brukeren
+igjennom appen lage en liste over ting en ikke burde gjøre, som skolearbeid osv.
+Den har og en skritteller slik at en ikke går for langt, samt ett ytterst
+engasjerende ballongspill.
+
+Vi valgte å dele koden inn i følgende komponenter:
+ * BaloonGame.js
+ * DontDos.js
+ * Home.js
+ * NewDontDo.js
+ 
+Da vi føler at dettevar det mest ryddige oppsettet. Her kunne vi kombinert
+`DontDos.js` og `ǸewDontDo.js`, men gruppen følte at det var mer ryddig med en
+ny side fremmfor et modalvindu eller lignende.
 
 # Branching
 
@@ -12,28 +27,28 @@ Husk å bruke feature branches!
 
 ### Paper 
 
-Paper er et bibliotek med komponenter som gjør design av apps enkelt, raskt og gjør det mye lettere å få en app til å se estetisk pen ut enn hvis en skulle brukt lang tid på å style alle komponentene selv. Det er material design for react native.
+Paper er et bibliotek med komponenter som gjør design av apps enkelt, raskt og
+gjør det mye lettere å få en app til å se estetisk pen ut enn hvis en skulle
+brukt lang tid på å style alle komponentene selv. Det er material design for
+react native. Dog førte dette biblioteket til noen problemer når det kom til
+testing.
 
 [Paper (github)](https://github.com/callstack/react-native-paper)
 
 ### Redux
 
-Redux er en state container for JavaScript apps. Det er til hjelp for å lage apps som oppfører seg likt over flere plattformer og er enkelt å teste.
+Redux er en state container for JavaScript apps. Det er til hjelp for å lage
+apps som oppfører seg likt over flere plattformer og er enkelt å teste.
 
 # Testing
 
-### Jest
+## Jest
 
-	* Snapshot testing
-	* TODO: Add more about jest
+I testingen brukte vi snappshot testing, dette betyr i utgangspunktet at vi tar
+ett stillbildet av tilstanden til appen og sammenlikner med det vi ønsker skulle
+skje.
 
 [Jest](https://jestjs.io/)
-
-### Enzyme
-	* Shallow rendering
-	* TODO: Add more about enzyme
-
-[Enzyme](https://airbnb.io/enzyme/)
 
 ### Kilder:
 
