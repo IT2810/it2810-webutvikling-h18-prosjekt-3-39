@@ -19,9 +19,7 @@ Da vi føler at dettevar det mest ryddige oppsettet. Her kunne vi kombinert
 `DontDos.js` og `ǸewDontDo.js`, men gruppen følte at det var mer ryddig med en
 ny side fremmfor et modalvindu eller lignende.
 
-# Branching
-
-Husk å bruke feature branches!
+Tilsvarende 
 
 # Biblioteker vi har tatt i bruk:
 
@@ -33,12 +31,10 @@ brukt lang tid på å style alle komponentene selv. Det er material design for
 react native. Dog førte dette biblioteket til noen problemer når det kom til
 testing.
 
+For eksempel så fungerer paper komponentene helt fint i `newDontDo.js` men ikke i 
+`DontDos.js`. Merk at det krasjet bare når vi skulle kjøre testene.
+
 [Paper (github)](https://github.com/callstack/react-native-paper)
-
-### Redux
-
-Redux er en state container for JavaScript apps. Det er til hjelp for å lage
-apps som oppfører seg likt over flere plattformer og er enkelt å teste.
 
 # Testing
 
