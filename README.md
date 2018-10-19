@@ -84,7 +84,7 @@ skje.
 [Pedometer](https://docs.expo.io/versions/latest/sdk/pedometer)
 
 
-#Teknologi:
+#Teknologi
 
 ### Animate
 Animated er et av react-native sine bibloteker. Det kan brukes til å gi
