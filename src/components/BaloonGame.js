@@ -19,7 +19,7 @@ export default class BaloonGame extends React.Component {
   // This generates 5 baloons as defined by the styles
   render() {
     return (
-        <View>
+        <View style = {{backgroundColor:"black", height: Dimensions.get("window").height}}>
           <TopAnimation style={styles.button}/>
           <TopAnimation style={styles.button}/>
           <TopAnimation style={styles.button}/>
