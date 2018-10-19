@@ -9,6 +9,7 @@ import Home from './src/components/Home';
 import BaloonGame from './src/components/BaloonGame';
 import DontDos from './src/components/DontDos';
 import NewDontDo from './src/components/NewDontDo';
+import PedometerSensor from './src/components/PedometerSensor';
 
 
 const styles = StyleSheet.create({
@@ -51,6 +52,17 @@ const DontDosStack = createStackNavigator({
   }
 });
 
+const PedometerStack = createStackNavigator({
+  Pedometer: {
+    screen: PedometerSensor,
+    navigationOptions: ({navigation}) => ({
+      title: "Skritteller",  // Title to appear in status bar
+      headerLeft: <Ionicons style={styles.header} name="md-menu" size={35}
+                            onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}/>,
+    })
+  }
+});
+
 const Root = createDrawerNavigator({
   DontDos: {
     screen: DontDosStack,
@@ -62,6 +74,12 @@ const Root = createDrawerNavigator({
     screen: BaloonGameStack,
     navigationOptions: {
       title: 'Baloon Game'
+    }
+  },
+  Pedometer: {
+    screen: PedometerStack,
+    navigationOptions: {
+      title: 'Skritteller'
     }
   }
 });
